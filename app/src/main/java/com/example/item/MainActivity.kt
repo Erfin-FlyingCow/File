@@ -30,42 +30,43 @@ class MainActivity<Catatan> : AppCompatActivity() {
         }
 
         val listView = findViewById<ListView>(R.id.listcatatan)
-        val catatanList = mutableListOf()
+        val catatanList = mutableListOf<com.example.item.Catatan>()
 
         val files = filesDir.listFiles()
         files?.forEach { file ->
             val catatan = bacaCatatan(file.name)
             catatan?.let { catatanList.add(it) }
         }
-        override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-            menuInflater.inflate(R.menu.app_menu, menu)
-            return true
-        }
 
 
-        override fun onOptionsItemSelected(item: MenuItem): Boolean {
-            return when (item.itemId) {
-                R.id.tambahcatatan -> {
-                    Intent(this, TambahCatatan::class.java).also {
-                        startActivity(it)
-                        finish()
-                    }
-                    return true
+        val adapter = CatatanAdapter(this,catatanList)
+        listView.adapter = adapter
+
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.tambahcatatan -> {
+                Intent(this, TambahCatatan::class.java).also {
+                    startActivity(it)
+                    finish()
                 }
-
-                R.id.tambahcatatan -> {
-                    Intent(this, MainActivity::class.java).also {
-                        startActivity(it)
-                        finish()
-                    }
-                    return true
-                }
-
-                else -> super.onOptionsItemSelected(item)
+                return true
             }
+
+            R.id.listcatatan -> {
+                Intent(this, MainActivity::class.java).also {
+                    startActivity(it)
+                    finish()
+                }
+                return true
+            }
+
+            else -> super.onOptionsItemSelected(item)
         }
-
-
+    }
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.app_menu, menu)
+        return true
     }
 
     fun bacaCatatan(filename: String): com.example.item.Catatan? {
@@ -87,8 +88,8 @@ class MainActivity<Catatan> : AppCompatActivity() {
             val lines = text.split("\n\n")
             if (lines.size >= 3) {
                 val judul: String = lines[0]
-                val catatan: String = lines[2]
-                val timestamp: String = lines[5]
+                val catatan: String = lines[1]
+                val timestamp: String = lines[2]
                 return Catatan(judul, catatan, timestamp)
             }
         } catch (e: IOException) {

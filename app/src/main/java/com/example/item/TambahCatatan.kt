@@ -56,7 +56,7 @@ class TambahCatatan : AppCompatActivity() {
                 }
                 return true
             }
-            R.id.tambahcatatan -> {
+            R.id.listcatatan -> {
                 Intent(this, MainActivity::class.java).also {
                     startActivity(it)
                     finish()
@@ -84,11 +84,11 @@ class TambahCatatan : AppCompatActivity() {
 
             var filename = "${timepicker()}.txt"
             var file = File(filesDir,filename)
-            var lastModiffed = "Last Modiffed ${timepicker()}"
+            var lastModified = "Last Modified ${timepicker()}"
 
             var outputStream : FileOutputStream? = null
 
-            var data = "$judul\n\n$catatan\n\n\n$lastModiffed"
+            var data = "$judul\n\n$catatan\n\n$lastModified"
 
             try {
                 outputStream = FileOutputStream(file,false)
