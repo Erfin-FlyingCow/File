@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import java.io.File
+import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -20,6 +21,9 @@ import java.util.Calendar
 import java.util.Locale
 
 class TambahCatatan : AppCompatActivity() {
+
+    lateinit var inputjudul :EditText
+    lateinit var inputcatatan : EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -64,8 +68,8 @@ class TambahCatatan : AppCompatActivity() {
     }
 
     fun buatcatatan(){
-        var inputjudul  = findViewById<TextView>(R.id.NamaFile)
-        var inputcatatan  = findViewById<TextView>(R.id.catatan)
+        inputjudul  = findViewById<EditText>(R.id.NamaFile)
+        inputcatatan  = findViewById<EditText>(R.id.catatan)
 
 
         var judul = inputjudul.text.toString()
@@ -100,6 +104,38 @@ class TambahCatatan : AppCompatActivity() {
         }
 
 
+    }
+
+    public fun bacaCatatan(filename: String) {
+        val file = File(filesDir, filename)
+
+        if (!file.exists()) {
+            Toast.makeText(this, "File tidak ditemukan", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        var inputStream: FileInputStream? = null
+        try {
+            inputStream = FileInputStream(file)
+            val size = inputStream.available()
+            val buffer = ByteArray(size)
+            inputStream.read(buffer)
+            val text = String(buffer)
+
+            val lines = text.split("\n\n")
+            if (lines.size >= 2) {
+                val judul = lines[0]
+                val catatan = lines[2]
+                val time = lines[5]
+                inputjudul.setText(judul)
+                inputcatatan.setText(catatan)
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+            Toast.makeText(this, "Gagal membaca catatan", Toast.LENGTH_SHORT).show()
+        } finally {
+            inputStream?.close()
+        }
     }
 
     fun timepicker (): String {
