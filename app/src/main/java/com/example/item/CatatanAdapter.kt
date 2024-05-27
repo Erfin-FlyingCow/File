@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.annotation.ContentView
 
-class CatatanAdapter<Catatan>(private val context: Context, private val catatanList: List<Catatan>) : ArrayAdapter<Catatan>(context, 0, catatanList) {
+class CatatanAdapter(private val context: Context, private val catatanList: List<Catatan>) : ArrayAdapter<Catatan>(context, 0, catatanList) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         var listItemView = convertView

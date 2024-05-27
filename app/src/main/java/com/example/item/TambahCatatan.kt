@@ -15,6 +15,9 @@ import androidx.core.view.WindowInsetsCompat
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class TambahCatatan : AppCompatActivity() {
 
@@ -61,8 +64,6 @@ class TambahCatatan : AppCompatActivity() {
     }
 
     fun buatcatatan(){
-
-        var filename : String  = "file.txt"
         var inputjudul  = findViewById<TextView>(R.id.NamaFile)
         var inputcatatan  = findViewById<TextView>(R.id.catatan)
 
@@ -75,13 +76,15 @@ class TambahCatatan : AppCompatActivity() {
             return
         }
         else {
-            val timestamp = System.currentTimeMillis()
-            val filename = "catatan_$timestamp.txt"
+
+
+            var filename = "${timepicker()}.txt"
             var file = File(filesDir,filename)
+            var lastModiffed = "Last Modiffed ${timepicker()}"
 
             var outputStream : FileOutputStream? = null
 
-            var data = "$judul\n\n$catatan"
+            var data = "$judul\n\n$catatan\n\n\n$lastModiffed"
 
             try {
                 outputStream = FileOutputStream(file,false)
@@ -97,6 +100,15 @@ class TambahCatatan : AppCompatActivity() {
         }
 
 
+    }
+
+    fun timepicker (): String {
+        var currentTime = Calendar.getInstance().time
+        var formatTime = SimpleDateFormat("dd_MM_yyyy_HH_mm_ss", Locale.getDefault())
+        var formatedDateTime = formatTime.format(currentTime)
+
+
+        return formatedDateTime
     }
 
 }
