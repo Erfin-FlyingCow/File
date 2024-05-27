@@ -22,11 +22,10 @@ import java.util.Locale
 
 class TambahCatatan : AppCompatActivity() {
 
-    lateinit var inputjudul :EditText
-    lateinit var inputcatatan : EditText
+    lateinit var inputjudul: EditText
+    lateinit var inputcatatan: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_tambah_catatan)
@@ -36,24 +35,23 @@ class TambahCatatan : AppCompatActivity() {
             insets
         }
 
-        inputjudul  = findViewById<EditText>(R.id.NamaFile)
-        inputcatatan  = findViewById<EditText>(R.id.catatan)
+        inputjudul = findViewById(R.id.NamaFile)
+        inputcatatan = findViewById(R.id.catatan)
 
+        var filename = intent.getStringExtra("file") ?: ""
+        if (filename.isNotEmpty()) {
+            bacaCatatan(filename)
+        }
 
-
-        var filename = intent.getStringExtra("file").toString()
-        bacaCatatan(filename)
-
-        val simpan : Button = findViewById(R.id.btnsimpan)
-        simpan.setOnClickListener(){
-            if(filename.isEmpty()){
+        val simpan: Button = findViewById(R.id.btnsimpan)
+        simpan.setOnClickListener {
+            if (filename.isEmpty()) {
                 buatcatatan()
                 Intent(this, MainActivity::class.java).also {
                     startActivity(it)
                     finish()
                 }
-            }
-            else{
+            } else {
                 editcatatan(filename)
                 Intent(this, MainActivity::class.java).also {
                     startActivity(it)
@@ -61,13 +59,13 @@ class TambahCatatan : AppCompatActivity() {
                 }
             }
         }
-
-
     }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.app_menu,menu)
+        menuInflater.inflate(R.menu.app_menu, menu)
         return true
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.tambahcatatan -> {
@@ -75,96 +73,75 @@ class TambahCatatan : AppCompatActivity() {
                     startActivity(it)
                     finish()
                 }
-                return true
+                true
             }
             R.id.listcatatan -> {
                 Intent(this, MainActivity::class.java).also {
                     startActivity(it)
                     finish()
                 }
-                return true
+                true
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
-    fun buatcatatan(){
+    fun buatcatatan() {
+        val judul = inputjudul.text.toString()
+        val catatan = inputcatatan.text.toString()
 
-
-
-        var judul = inputjudul.text.toString()
-        var catatan =inputcatatan.text.toString()
-
-        if (judul.isEmpty()||catatan.isEmpty()){
-            Toast.makeText(this,"Judul dan Catatan tidak boleh kosong",Toast.LENGTH_SHORT).show()
+        if (judul.isEmpty() || catatan.isEmpty()) {
+            Toast.makeText(this, "Judul dan Catatan tidak boleh kosong", Toast.LENGTH_SHORT).show()
             return
         }
-        else {
 
+        val time = timepicker()
+        val filename = "$time.txt"
+        val file = File(filesDir, filename)
+        val lastModified = "Last Modified ${timepicker()}"
 
-            var filename = "${timepicker()}.txt"
-            var file = File(filesDir,filename)
-            var lastModified = "Last Modified ${timepicker()}"
+        val data = "$judul\n\n$catatan\n\n$lastModified"
 
-            var outputStream : FileOutputStream? = null
-
-            var data = "$judul\n\n$catatan\n\n$lastModified"
-
-            try {
-                outputStream = FileOutputStream(file,false)
+        try {
+            FileOutputStream(file, false).use { outputStream ->
                 outputStream.write(data.toByteArray())
                 outputStream.flush()
-                outputStream.close()
                 Toast.makeText(this, "catatan berhasil disimpan", Toast.LENGTH_SHORT).show()
-            } catch (e : IOException){
-                e.printStackTrace()
-                Toast.makeText(this, "catatan gagal disimpan", Toast.LENGTH_SHORT).show()
             }
-
+        } catch (e: IOException) {
+            e.printStackTrace()
+            Toast.makeText(this, "catatan gagal disimpan", Toast.LENGTH_SHORT).show()
         }
-
-
     }
 
-    fun editcatatan(file :String){
+    fun editcatatan(file: String) {
+        val judul = inputjudul.text.toString()
+        val catatan = inputcatatan.text.toString()
 
-
-
-        var judul = inputjudul.text.toString()
-        var catatan =inputcatatan.text.toString()
-
-        if (judul.isEmpty()||catatan.isEmpty()){
-            Toast.makeText(this,"Judul dan Catatan tidak boleh kosong",Toast.LENGTH_SHORT).show()
+        if (judul.isEmpty() || catatan.isEmpty()) {
+            Toast.makeText(this, "Judul dan Catatan tidak boleh kosong", Toast.LENGTH_SHORT).show()
             return
         }
-        else {
 
+        val filename = file
+        val file = File(filesDir, filename)
+        val lastModified = "Last Modified ${timepicker()}"
 
-            var filename = "$file"
-            var file = File(filesDir,filename)
-            var lastModified = "Last Modified ${timepicker()}"
+        val data = "$judul\n\n$catatan\n\n$lastModified"
 
-            var outputStream : FileOutputStream? = null
-
-            var data = "$judul\n\n$catatan\n\n$lastModified"
-
-            try {
-                outputStream = FileOutputStream(file,false)
+        try {
+            FileOutputStream(file, false).use { outputStream ->
                 outputStream.write(data.toByteArray())
                 outputStream.flush()
-                outputStream.close()
                 Toast.makeText(this, "catatan berhasil disimpan", Toast.LENGTH_SHORT).show()
-            } catch (e : IOException){
-                e.printStackTrace()
-                Toast.makeText(this, "catatan gagal disimpan", Toast.LENGTH_SHORT).show()
             }
-
+        } catch (e: IOException) {
+            e.printStackTrace()
+            Toast.makeText(this, "catatan gagal disimpan", Toast.LENGTH_SHORT).show()
         }
-
-
     }
 
-    public fun bacaCatatan(filename: String) {
+    fun bacaCatatan(filename: String) {
         val file = File(filesDir, filename)
 
         if (!file.exists()) {
@@ -172,38 +149,30 @@ class TambahCatatan : AppCompatActivity() {
             return
         }
 
-        var inputStream: FileInputStream? = null
         try {
-            inputStream = FileInputStream(file)
-            val size = inputStream.available()
-            val buffer = ByteArray(size)
-            inputStream.read(buffer)
-            val text = String(buffer)
+            FileInputStream(file).use { inputStream ->
+                val size = inputStream.available()
+                val buffer = ByteArray(size)
+                inputStream.read(buffer)
+                val text = String(buffer)
 
-            val lines = text.split("\n\n")
-            if (lines.size >= 2) {
-                val judul = lines[0]
-                val catatan = lines[1]
-                val time = lines[2]
-                inputjudul.setText(judul)
-                inputcatatan.setText(catatan)
-                return
+                val lines = text.split("\n\n")
+                if (lines.size >= 3) {
+                    val judul = lines[0]
+                    val catatan = lines[1]
+                    inputjudul.setText(judul)
+                    inputcatatan.setText(catatan)
+                }
             }
         } catch (e: IOException) {
             e.printStackTrace()
             Toast.makeText(this, "Gagal membaca catatan", Toast.LENGTH_SHORT).show()
-        } finally {
-            inputStream?.close()
         }
     }
 
-    fun timepicker (): String {
-        var currentTime = Calendar.getInstance().time
-        var formatTime = SimpleDateFormat("dd_MM_yyyy_HH_mm_ss", Locale.getDefault())
-        var formatedDateTime = formatTime.format(currentTime)
-
-
-        return formatedDateTime
+    fun timepicker(): String {
+        val currentTime = Calendar.getInstance().time
+        val formatTime = SimpleDateFormat("dd_MM_yyyy_HH_mm_ss", Locale.getDefault())
+        return formatTime.format(currentTime)
     }
-
 }
