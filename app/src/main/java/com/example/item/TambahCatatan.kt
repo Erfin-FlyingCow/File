@@ -36,6 +36,14 @@ class TambahCatatan : AppCompatActivity() {
             insets
         }
 
+        inputjudul  = findViewById<EditText>(R.id.NamaFile)
+        inputcatatan  = findViewById<EditText>(R.id.catatan)
+
+
+
+        var filename = intent.getStringExtra("file").toString()
+        bacaCatatan(filename)
+
         val simpan : Button = findViewById(R.id.btnsimpan)
         simpan.setOnClickListener(){
             buatcatatan()
@@ -68,8 +76,7 @@ class TambahCatatan : AppCompatActivity() {
     }
 
     fun buatcatatan(){
-        inputjudul  = findViewById<EditText>(R.id.NamaFile)
-        inputcatatan  = findViewById<EditText>(R.id.catatan)
+
 
 
         var judul = inputjudul.text.toString()
@@ -125,10 +132,11 @@ class TambahCatatan : AppCompatActivity() {
             val lines = text.split("\n\n")
             if (lines.size >= 2) {
                 val judul = lines[0]
-                val catatan = lines[2]
-                val time = lines[5]
+                val catatan = lines[1]
+                val time = lines[2]
                 inputjudul.setText(judul)
                 inputcatatan.setText(catatan)
+                return
             }
         } catch (e: IOException) {
             e.printStackTrace()

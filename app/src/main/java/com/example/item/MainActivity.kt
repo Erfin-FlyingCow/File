@@ -1,10 +1,12 @@
 package com.example.item
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.ListView
 import android.widget.Toast
 import android.widget.Toolbar
@@ -18,6 +20,7 @@ import java.io.IOException
 import com.example.item.TambahCatatan
 
 class MainActivity<Catatan> : AppCompatActivity() {
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -41,6 +44,19 @@ class MainActivity<Catatan> : AppCompatActivity() {
 
         val adapter = CatatanAdapter(this,catatanList)
         listView.adapter = adapter
+        listView.isClickable = true
+
+        listView.setOnItemClickListener { parent, view, position, id ->
+            val selectedItem = catatanList[position]
+            val intent = Intent(this, TambahCatatan::class.java)
+            var time = selectedItem.timestamp.substring(14)
+            var filename = "$time.txt"
+            intent.putExtra("file",filename)
+            Toast.makeText(this,"$filename",Toast.LENGTH_SHORT).show()
+            startActivity(intent)
+        }
+
+
 
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -100,4 +116,6 @@ class MainActivity<Catatan> : AppCompatActivity() {
         }
         return null
     }
+
+
 }
