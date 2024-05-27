@@ -55,9 +55,6 @@ class MainActivity<Catatan> : AppCompatActivity() {
             Toast.makeText(this,"$filename",Toast.LENGTH_SHORT).show()
             startActivity(intent)
         }
-
-
-
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
