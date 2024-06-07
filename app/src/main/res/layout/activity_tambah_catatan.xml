@@ -14,6 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Nama File"
+        android:textColor="@color/white"
         android:textSize="20dp"
         android:textStyle="bold" />
 
@@ -27,6 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
+        android:textColor="@color/white"
         android:text="Catatan"
         android:textSize="20dp"
         android:textStyle="bold" />

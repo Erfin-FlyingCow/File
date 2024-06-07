@@ -9,6 +9,7 @@
     android:background="#FF0202">
 
     <LinearLayout
+        android:id="@+id/linear"
         android:layout_marginVertical="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,7 +19,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily=""
+            android:textColor="@color/white"
             android:text="List Catatan"
             android:textSize="50sp"
             android:background="#FF0202"
@@ -35,7 +36,29 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/hintedit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linear"
+        android:background="#FF0202"
+        android:textColor="@color/white"
+        android:text="Tekan untuk edit"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
+    <TextView
+        android:id="@+id/hinthapus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/hintedit"
+        android:background="#FF0202"
+        android:textColor="@color/white"
+        android:text="Tahan untuk Hapus"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
 
 </RelativeLayout>
