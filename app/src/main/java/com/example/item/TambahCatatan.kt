@@ -23,6 +23,7 @@ import java.util.Locale
 class TambahCatatan : AppCompatActivity() {
 
     lateinit var inputjudul: EditText
+    lateinit var filename: String
     lateinit var inputcatatan: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,12 +36,21 @@ class TambahCatatan : AppCompatActivity() {
             insets
         }
 
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+
         inputjudul = findViewById(R.id.NamaFile)
         inputcatatan = findViewById(R.id.catatan)
 
-        var filename = intent.getStringExtra("file") ?: ""
+
+
+        filename = intent.getStringExtra("file") ?: ""
         if (filename.isNotEmpty()) {
             bacaCatatan(filename)
+            Toast.makeText(this, filename,Toast.LENGTH_SHORT)
         }
 
         val simpan: Button = findViewById(R.id.btnsimpan)
@@ -59,6 +69,7 @@ class TambahCatatan : AppCompatActivity() {
                 }
             }
         }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -100,7 +111,7 @@ class TambahCatatan : AppCompatActivity() {
         val file = File(filesDir, filename)
         val lastModified = "Last Modified ${timepicker()}"
 
-        val data = "$judul\n\n$catatan\n\n$lastModified"
+        val data = "$judul\n\n$catatan\n\n$lastModified\n\n$filename"
 
         try {
             FileOutputStream(file, false).use { outputStream ->
@@ -127,7 +138,7 @@ class TambahCatatan : AppCompatActivity() {
         val file = File(filesDir, filename)
         val lastModified = "Last Modified ${timepicker()}"
 
-        val data = "$judul\n\n$catatan\n\n$lastModified"
+        val data = "$judul\n\n$catatan\n\n$lastModified\n\n$filename"
 
         try {
             FileOutputStream(file, false).use { outputStream ->
