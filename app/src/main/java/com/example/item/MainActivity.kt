@@ -17,6 +17,7 @@ import java.io.IOException
 class MainActivity : AppCompatActivity() {
 
     lateinit var listView: ListView
+    lateinit var filename: String
     val catatanList = mutableListOf<Catatan>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,8 +50,7 @@ class MainActivity : AppCompatActivity() {
         listView.setOnItemClickListener { parent, view, position, id ->
             val selectedItem = catatanList[position]
             val intent = Intent(this, TambahCatatan::class.java)
-            val time = selectedItem.filename
-            val filename = "$time"
+            filename = selectedItem.filename
             intent.putExtra("file", filename)
             Toast.makeText(this, filename, Toast.LENGTH_SHORT).show()
             startActivity(intent)
@@ -58,8 +58,7 @@ class MainActivity : AppCompatActivity() {
 
         listView.setOnItemLongClickListener { parent, view, position, id ->
             val selectedItem = catatanList[position]
-            val filename = "${selectedItem.timestamp.substring(14)}.txt"
-
+            filename = selectedItem.filename
             hapusCatatan(filename)
             catatanList.removeAt(position)
             adapter.notifyDataSetChanged()
